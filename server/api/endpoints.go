@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
   "database/sql"
 	"net/http"
+  "resourceflow/process"
 )
 
 func Health(c *gin.Context) {
@@ -12,6 +13,7 @@ func Health(c *gin.Context) {
 
 func GetInventory(db *sql.DB) func(c *gin.Context) {
   return func(c *gin.Context) {
-    
+    query := c.Param("query")
+    process.GetItems(db, query)
   }
 }
