@@ -1,0 +1,16 @@
+/* Reset global margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensure all elements respect padding and borders */
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Remove margin/padding from the navbar itself */
+nav {
+    margin: 0;
+    padding: 0;
+}
