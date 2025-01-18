@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 const NavBar = () => {
     return (
         <nav style={styles.navbar}>
-            <div className="rightNavBar" style={styles.navLinks}>
-                <Link to="/" className="link" style={styles.link}>Home</Link>
-                <Link to="/addingpage" className="link" style={styles.link}>Add</Link>
-                <Link to="/requestpage" className="link" style={styles.link}>Request</Link>
+            <div style={styles.leftNav}>
+                <Link to="/" style={styles.link}>Home</Link>
+            </div>
+            <div style={styles.rightNav}>
+                <Link to="/addingpage" style={styles.link}>Add</Link>
+                <Link to="/requestpage" style={styles.link}>Request</Link>
             </div>
         </nav>
     );
@@ -15,27 +17,33 @@ const NavBar = () => {
 
 const styles = {
     navbar: {
-        backgroundColor: '#007BFF',  // Blue background
-        padding: '10px 20px',        // Padding for spacing
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow
-    },
-    navLinks: {
+        backgroundColor: '#29660C', // Dark green color
+        padding: '10px 20px',
         display: 'flex',
-        justifyContent: 'center',  // Center the links
+        justifyContent: 'space-between',
         alignItems: 'center',
-        gap: '20px',               // Space between links
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        position: 'sticky',
+        top: 0,
+    },
+    leftNav: {
+        flex: 1,
+    },
+    rightNav: {
+        display: 'flex',
+        gap: '20px', // Space between buttons
     },
     link: {
-        color: 'white',            // White text color
-        textDecoration: 'none',    // Remove underline
-        fontSize: '18px',          // Font size
-        padding: '8px 16px',       // Padding for clickable area
-        borderRadius: '4px',       // Rounded corners
-        transition: 'background-color 0.3s ease', // Smooth transition on hover
+        color: 'white', // White text color
+        textDecoration: 'none',
+        fontSize: '18px',
+        padding: '8px 16px',
+        borderRadius: '4px',
+        transition: 'background-color 0.3s ease',
     },
     linkHover: {
-        backgroundColor: '#0056b3', // Darker blue on hover
-    }
+        backgroundColor: '#1e4e0a', // Slightly darker green on hover
+    },
 };
 
 export default NavBar;

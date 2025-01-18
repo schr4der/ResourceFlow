@@ -1,58 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-// Sample autocomplete data (can be replaced with an API)
 const suggestions = [
     'React',
-    'React Native',
     'JavaScript',
-    'Node.js',
-    'Python',
     'HTML',
     'CSS',
-    'TypeScript',
+    'Node.js',
+    'Python',
     'Java',
-    'GitHub',
+    'C++',
 ];
 
 const LandingPage = () => {
-    const [query, setQuery] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const containerRef = useRef(null);
 
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setQuery(value);
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                setShowSuggestions(false);
+            }
+        };
 
-        // Filter suggestions based on the query
-        const filtered = suggestions.filter((suggestion) =>
-            suggestion.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredSuggestions(filtered);
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        setSearchTerm(value);
+
+        if (value) {
+            const filtered = suggestions.filter((suggestion) =>
+                suggestion.toLowerCase().includes(value.toLowerCase())
+            );
+            setFilteredSuggestions(filtered);
+            setShowSuggestions(true);
+        } else {
+            setFilteredSuggestions([]);
+            setShowSuggestions(false);
+        }
     };
 
-    const handleSuggestionClick = (suggestion) => {
-        setQuery(suggestion);
-        setFilteredSuggestions([]); // Clear suggestions after selection
+    const handleGoClick = () => {
+        alert(`You searched for: ${searchTerm}`);
     };
 
     return (
         <div style={styles.container}>
-            <h1 style={styles.title}>Welcome to the Landing Page</h1>
-            <div style={styles.searchContainer}>
+            <h1 style={styles.heading}>I'm looking for</h1>
+            <div ref={containerRef} style={styles.searchContainer}>
                 <input
                     type="text"
-                    value={query}
-                    onChange={handleChange}
                     placeholder="Search..."
+                    value={searchTerm}
+                    onChange={handleInputChange}
                     style={styles.searchInput}
                 />
-                {filteredSuggestions.length > 0 && (
+                <button onClick={handleGoClick} style={styles.goButton}>Go</button>
+                {showSuggestions && (
                     <ul style={styles.suggestionList}>
                         {filteredSuggestions.map((suggestion, index) => (
-                            <li
-                                key={index}
-                                onClick={() => handleSuggestionClick(suggestion)}
-                                style={styles.suggestionItem}
-                            >
+                            <li key={index} style={styles.suggestionItem}>
                                 {suggestion}
                             </li>
                         ))}
@@ -65,44 +78,58 @@ const LandingPage = () => {
 
 const styles = {
     container: {
-        textAlign: 'center',
-        marginTop: '100px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingTop: '30vh',
+        height: '100vh',
+        backgroundColor: '#f5f5f5',
     },
-    title: {
-        fontSize: '24px',
+    heading: {
+        fontSize: '2rem',
         marginBottom: '20px',
     },
     searchContainer: {
+        display: 'flex',
+        alignItems: 'center',
         position: 'relative',
-        display: 'inline-block',
+        width: '400px',
     },
     searchInput: {
-        width: '400px',
-        padding: '10px',
-        fontSize: '18px',
-        borderRadius: '25px',
+        flex: 1,
+        padding: '12px 20px',
+        fontSize: '16px',
+        borderRadius: '25px 0 0 25px',
         border: '1px solid #ccc',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        outline: 'none',
+    },
+    goButton: {
+        padding: '12px 20px',
+        fontSize: '16px',
+        border: 'none',
+        backgroundColor: '#29660C',
+        color: 'white',
+        borderRadius: '0 25px 25px 0',
+        cursor: 'pointer',
+        outline: 'none',
     },
     suggestionList: {
+        listStyleType: 'none',
+        margin: 0,
+        padding: 0,
+        backgroundColor: 'white',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         position: 'absolute',
         top: '100%',
         left: 0,
         right: 0,
-        backgroundColor: 'white',
-        border: '1px solid #ccc',
-        borderRadius: '5px',
-        maxHeight: '200px',
-        overflowY: 'auto',
-        marginTop: '5px',
-        listStyle: 'none',
-        padding: '0',
+        zIndex: 10,
     },
     suggestionItem: {
         padding: '10px',
         cursor: 'pointer',
-        backgroundColor: '#fff',
-        transition: 'background-color 0.3s',
     },
 };
 
