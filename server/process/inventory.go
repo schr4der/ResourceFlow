@@ -6,6 +6,7 @@ import (
 )
 
 func GetItems(db *sql.DB, query string) []model.Item {
+	
 }
 
 func AddItems(db *sql.DB, []model.Item) {

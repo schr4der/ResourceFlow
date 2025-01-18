@@ -1,8 +1,8 @@
 package model
 
 type Item struct {
-	id          string
-	name        string
-	description string
-	quantity    int
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Quantity    int    `json:"quantity"`
 }
