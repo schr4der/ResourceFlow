@@ -64,21 +64,38 @@ func Match(db *sql.DB) ([]model.Match, error) {
 		donators = append(donators, donator)
 	}
 
-  for i, requester := range(requesters) {
-    for j, donator := range(donators) {
-      if requester.ItemID == donator.ItemID {
-        matchedAmount := min(donator.Quantity, requester.Quantity)
-        matches = append(matches, model.Match{
-          people[requester.PersonID - 1].Name,
-          people[donator.PersonID - 1].Name,
-          items[donator.ItemID - 1].Name,
-          matchedAmount,
-        })
-        donators[j].Quantity = donators[j].Quantity - matchedAmount 
-        requesters[i].Quantity = requesters[i].Quantity - matchedAmount 
-      }
-    }
-  }
-
+	for i, requester := range requesters {
+		for j, donator := range donators {
+			if requester.ItemID == donator.ItemID {
+				// Ensure requester.PersonID is valid
+				if requester.PersonID <= 0 || requester.PersonID > len(people) {
+					continue
+				}
+	
+				// Ensure donator.PersonID is valid
+				if donator.PersonID <= 0 || donator.PersonID > len(people) {
+					continue
+				}
+	
+				// Ensure donator.ItemID is valid
+				if donator.ItemID <= 0 || donator.ItemID > len(items) {
+					continue
+				}
+	
+				matchedAmount := min(donator.Quantity, requester.Quantity)
+				matches = append(matches, model.Match{
+					people[requester.PersonID-1].Name,
+					people[donator.PersonID-1].Name,
+					items[donator.ItemID-1].Name,
+					matchedAmount,
+				})
+	
+				// Update quantities
+				donators[j].Quantity -= matchedAmount
+				requesters[i].Quantity -= matchedAmount
+			}
+		}
+	}
+	
 	return matches, nil
 }
