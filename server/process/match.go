@@ -2,7 +2,6 @@ package process
 
 import (
 	"database/sql"
-	"fmt"
 	"resourceflow/model"
 )
 
@@ -80,8 +79,6 @@ func Match(db *sql.DB) ([]model.Match, error) {
       }
     }
   }
-
-  fmt.Println(matches)
 
 	return matches, nil
 }

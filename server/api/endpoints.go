@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"resourceflow/model"
 	"resourceflow/process"
-  "fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -89,12 +88,11 @@ func RequestItem(db *sql.DB) func(c *gin.Context) {
 
 func Match(db *sql.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
-    _, err := process.Match(db)
+    matches, err := process.Match(db)
     if err != nil {
       c.Status(http.StatusInternalServerError)
-      fmt.Println(err)
       return 
     }
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, matches)
 	}
 }
