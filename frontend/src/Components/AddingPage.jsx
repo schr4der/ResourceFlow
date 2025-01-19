@@ -10,7 +10,7 @@ const AddingPage = () => {
     const [items, setItems] = useState(data);
     const [customItem, setCustomItem] = useState('');
     const [customQuantity, setCustomQuantity] = useState(0);
-    const [customDescription, setCustomDescription] = useState(''); // New state for description
+    const [customDescription, setCustomDescription] = useState('');
 
     const handleQuantityChange = (index, quantity) => {
         const updatedItems = [...items];
@@ -35,7 +35,7 @@ const AddingPage = () => {
                 const updatedItems = data.items.map(item => ({
                     id: item.id,
                     name: item.name,
-                    quantity: item.quantity,
+                    quantity: 1,
                     checked: false,
                 }));
 
@@ -58,10 +58,6 @@ const AddingPage = () => {
             alert('Please select at least one item before proceeding.');
             return;
         }
-
-        // checkedItems.forEach(item => {
-        //     to_add.push({ person_id: 0, item_id: item.id, quantity: item.quantity});
-        // });
 
         checkedItems.forEach(item => {
             to_add.push({ person_id: 0, item_id: parseInt(item.id), quantity: item.quantity});
@@ -102,11 +98,6 @@ const AddingPage = () => {
             alert('Error: Please enter a valid description.');
             return;
         }
-
-        // if (customQuantity === 0) {
-        //     alert('Error: Please select a valid quantity.');
-        //     return;
-        // }
 
         console.log("customitem: ", customItem);
         console.log("customDescription: ", customDescription);
@@ -163,7 +154,7 @@ const AddingPage = () => {
                             />
                             <span style={styles.itemName}>{item.name}</span>
                             <select
-                                value={1}
+                                value={item.quantity}
                                 onChange={(e) => handleQuantityChange(index, e.target.value)}
                                 style={styles.select}
                             >
@@ -182,7 +173,7 @@ const AddingPage = () => {
                 </button>
             </div>
 
-            <div style={styles.container}>
+            <div style={styles.container_custom}>
                 <p style={styles.description}>Don't see your item in the list? Add it below.</p>
 
                 <div style={styles.customInputContainer}>
@@ -200,17 +191,6 @@ const AddingPage = () => {
                         placeholder="Custom Item Description"
                         style={styles.searchInput}
                     />
-                    {/* <select
-                    value={customQuantity}
-                    onChange={(e) => setCustomQuantity(e.target.value)}
-                    style={styles.select}
-                    >
-                    {[...Array(100)].map((_, number) => (
-                        <option key={number} value={number}>
-                            {number}
-                        </option>
-                    ))}
-                    </select> */}
                     <button onClick={handleAddCustomItem} style={styles.custom_button}>
                         Add Custom Item
                     </button>
@@ -226,6 +206,16 @@ const styles = {
     container: {
         fontFamily: 'Arial, sans-serif',
         maxWidth: '600px',
+        margin: '40px auto',
+        padding: '20px',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#f9f9f9',
+    },
+    container_custom: {
+        fontFamily: 'Arial, sans-serif',
+        maxWidth: '800px',
         margin: '40px auto',
         padding: '20px',
         border: '1px solid #ddd',
