@@ -68,7 +68,13 @@ const RequestingPage = () => {
                             type="checkbox"
                             checked={item.checked || false}
                             onChange={() => handleCheckboxChange(index)}
-                            style={styles.checkbox}
+                            style={{
+                                width: '30px',
+                                height: '30px',
+                                marginRight: '10px', 
+                                cursor: 'pointer', 
+                                accentColor: 'green',
+                            }}
                         />
                         <span style={styles.itemName}>{item.name}</span>
                         <select
