@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const dummyData = [
-    { name: 'Item 1', quantity: 0 },
-    { name: 'Item 2', quantity: 0 },
-    { name: 'Item 3', quantity: 0 },
-    { name: 'Item 4', quantity: 0 },
-    { name: 'Item 5', quantity: 0 },
-];
+const dummyData = [];
 
 const API_ENDPOINT = 'https://example.com/api/selected-items'; // Replace with your endpoint URL
 
 const AddingPage = () => {
     const [items, setItems] = useState(dummyData);
+    const [inventory, setInventory] = useState([]);
 
     const handleQuantityChange = (index, quantity) => {
         const updatedItems = [...items];
@@ -24,6 +19,35 @@ const AddingPage = () => {
         updatedItems[index].checked = !updatedItems[index].checked;
         setItems(updatedItems);
     };
+
+    useEffect(() => {
+        // Fetch inventory on page load
+        const fetchInventory = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/inventory');
+                const data = await response.json();
+                console.log('Fetched Inventory:', data);
+
+                
+                data.items.forEach(item => {
+                    console.log("item:", item);
+                    dummyData.push({ name: item.name, quantity: item.quantity});
+                });
+
+                if (data && Array.isArray(data.items)) {
+                    setInventory(data.items);  // Set inventory to the 'items' array
+                } else {
+                    console.error('Fetched data is not in the expected format:', data);
+                }
+
+
+            } catch (error) {
+                console.error('Error fetching inventory:', error);
+            }
+        };
+        fetchInventory();
+    }, []);
+
 
     const handleNext = async () => {
         const checkedItems = items.filter((item) => item.checked);
