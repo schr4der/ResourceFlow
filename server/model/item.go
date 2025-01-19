@@ -8,7 +8,7 @@ type Item struct {
 }
 
 type SelectItem struct {
-	PersonID int `json:"PersonID"`
-	ItemID   int `json:"ItemID"`
+	PersonID int `json:"person_id"`
+	ItemID   int `json:"item_id"`
 	Quantity int `json:"quantity"`
 }
