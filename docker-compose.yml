@@ -1,0 +1,18 @@
+services:
+  resource-flow-server:
+    build:
+      context: ./server
+    container_name: resource-flow-server
+    volumes:
+      - sqlite_data:/db
+    ports:
+      - "8080:8080"
+  resource-flow-frontend:
+    build:
+      context: ./frontend
+    container_name: resource-flow-frontend
+    ports:
+      - "80:80"
+
+volumes:
+  sqlite_data:
