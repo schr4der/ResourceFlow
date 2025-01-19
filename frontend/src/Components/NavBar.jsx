@@ -5,16 +5,26 @@ const NavBar = ({ user, onLogout }) => {
   return (
     <nav style={styles.navbar}>
       <div className="leftNavBar" style={styles.navLinks}>
-        <Link to="/" className="link" style={styles.link}>Home</Link>
+        <Link to="/" className="link" style={styles.link}>
+          ResourceFlow
+        </Link>
       </div>
       <div className="rightNavBar" style={styles.navLinks}>
-        <Link to="/addingpage" className="link" style={styles.link}>Donate</Link>
-        <Link to="/requestpage" className="link" style={styles.link}>Request</Link>
+        <Link to="/addingpage" className="link" style={styles.link}>
+          Donate
+        </Link>
+        <Link to="/requestpage" className="link" style={styles.link}>
+          Request
+        </Link>
 
-        <Link to="/dashboardpage" className="link" style={styles.link}>Dashboard</Link>
+        <Link to="/dashboardpage" className="link" style={styles.link}>
+          Dashboard
+        </Link>
 
         {user && (
-          <button onClick={onLogout} style={styles.logoutButton}>Log Out</button>
+          <button onClick={onLogout} style={styles.logoutButton}>
+            Log Out
+          </button>
         )}
       </div>
     </nav>
@@ -23,23 +33,23 @@ const NavBar = ({ user, onLogout }) => {
 
 const styles = {
   navbar: {
-    padding: '10px 20px', // Padding for spacing
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    padding: "10px 20px", // Padding for spacing
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   navLinks: {
-    display: 'flex',
-    gap: '20px', // Space between links
-    alignItems: 'center',
+    display: "flex",
+    gap: "20px", // Space between links
+    alignItems: "center",
   },
   link: {
-    color: 'black', // White text color
-    textDecoration: 'none', // Remove underline
-    fontSize: '28px', // Font size
-    padding: '8px 16px', // Padding for clickable area
-    borderRadius: '4px', // Rounded corners
-    transition: 'background-color 0.3s ease',
+    color: "black", // White text color
+    textDecoration: "none", // Remove underline
+    fontSize: "28px", // Font size
+    padding: "8px 16px", // Padding for clickable area
+    borderRadius: "4px", // Rounded corners
+    transition: "background-color 0.3s ease",
     fontWeight: "bold",
   },
   logoutButton: {

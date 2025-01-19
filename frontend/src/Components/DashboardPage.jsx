@@ -8,6 +8,7 @@ const Dashboard = () => {
   const [matches, setMatches] = useState([]);
   const [requested, setRequested] = useState([]);
   const [donated, setDonated] = useState([]);
+  const [hoveredItem, setHoveredItem] = useState(null);
 
   // Check if there's a user in localStorage when the component mounts
   useEffect(() => {
@@ -105,7 +106,13 @@ const Dashboard = () => {
                     {requested.map((request, index) => (
                       <tr
                         key={index}
-                        style={index % 2 === 0 ? styles.rowEven : styles.rowOdd}
+                        style={{
+                          ...(index % 2 === 0 ? styles.rowEven : styles.rowOdd),
+                          backgroundColor:
+                            hoveredItem === request.item_name ? "#f0e68c" : "", // Highlight on hover
+                        }}
+                        onMouseEnter={() => setHoveredItem(request.item_name)} // Hover event
+                        onMouseLeave={() => setHoveredItem(null)} // Remove highlight on leave
                       >
                         <td style={styles.td}>{request.person_name}</td>
                         <td style={styles.td}>{request.item_name}</td>
@@ -140,9 +147,15 @@ const Dashboard = () => {
                       .map((match, index) => (
                         <tr
                           key={index}
-                          style={
-                            index % 2 === 0 ? styles.rowEven : styles.rowOdd
-                          }
+                          style={{
+                            ...(index % 2 === 0
+                              ? styles.rowEven
+                              : styles.rowOdd),
+                            backgroundColor:
+                              hoveredItem === match.item_name ? "#f0e68c" : "", // Highlight on hover
+                          }}
+                          onMouseEnter={() => setHoveredItem(match.item_name)} // Hover event
+                          onMouseLeave={() => setHoveredItem(null)} // Remove highlight on leave
                         >
                           <td style={styles.td}>{match.person1_name}</td>
                           <td style={styles.td}>{match.person2_name}</td>
@@ -173,7 +186,13 @@ const Dashboard = () => {
                     {donated.map((donation, index) => (
                       <tr
                         key={index}
-                        style={index % 2 === 0 ? styles.rowEven : styles.rowOdd}
+                        style={{
+                          ...(index % 2 === 0 ? styles.rowEven : styles.rowOdd),
+                          backgroundColor:
+                            hoveredItem === donation.item_name ? "#f0e68c" : "", // Highlight on hover
+                        }}
+                        onMouseEnter={() => setHoveredItem(donation.item_name)} // Hover event
+                        onMouseLeave={() => setHoveredItem(null)} // Remove highlight on leave
                       >
                         <td style={styles.td}>{donation.person_name}</td>
                         <td style={styles.td}>{donation.item_name}</td>

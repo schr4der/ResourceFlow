@@ -138,7 +138,7 @@ const AddingPage = () => {
   return (
     <div>
       <div style={styles.container}>
-        <h1 style={styles.header}>Add Items</h1>
+        <h1 style={styles.header}>Donate Items</h1>
         <p style={styles.description}>
           Select items, choose quantities, and proceed to submit your request.
         </p>
