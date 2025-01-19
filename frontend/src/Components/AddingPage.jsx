@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-const dummyData = [];
+const data = [];
 
-const API_ENDPOINT = 'https://example.com/api/selected-items'; // Replace with your endpoint URL
+const API_ENDPOINT = 'http://localhost:8080/inventory';
 
 const AddingPage = () => {
-    const [items, setItems] = useState(dummyData);
-    const [inventory, setInventory] = useState([]);
+    const [items, setItems] = useState(data);
 
     const handleQuantityChange = (index, quantity) => {
         const updatedItems = [...items];
@@ -24,21 +23,18 @@ const AddingPage = () => {
         // Fetch inventory on page load
         const fetchInventory = async () => {
             try {
-                const response = await fetch('http://localhost:8080/inventory');
+                const response = await fetch(API_ENDPOINT);
                 const data = await response.json();
                 console.log('Fetched Inventory:', data);
 
-                
-                data.items.forEach(item => {
-                    dummyData.push({ id:item.id, name: item.name, quantity: item.quantity});
-                });
+                const updatedItems = data.items.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    quantity: item.quantity,
+                    checked: false,
+                }));
 
-                if (data && Array.isArray(data.items)) {
-                    setInventory(data.items);  // Set inventory to the 'items' array
-                } else {
-                    console.error('Fetched data is not in the expected format:', data);
-                }
-
+                setItems(updatedItems);
 
             } catch (error) {
                 console.error('Error fetching inventory:', error);
