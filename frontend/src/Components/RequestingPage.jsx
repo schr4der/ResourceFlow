@@ -31,8 +31,7 @@ const RequestingPage = () => {
 
                 
                 data.items.forEach(item => {
-                    console.log("item:", item);
-                    dummyData.push({ name: item.name, quantity: item.quantity});
+                    dummyData.push({ id:item.id, name: item.name, quantity: item.quantity});
                 });
 
                 if (data && Array.isArray(data.items)) {
@@ -52,12 +51,21 @@ const RequestingPage = () => {
     const handleNext = async () => {
         const checkedItems = items.filter((item) => item.checked);
 
+        let to_add = [];
+
         if (checkedItems.length === 0) {
             alert('Please select at least one item before proceeding.');
             return;
         }
+        
+        checkedItems.forEach(item => {
+            to_add.push({ person_id: 0, item_id: item.id, quantity: item.quantity});
+        });
 
-        const payload = JSON.stringify({ selectedItems: checkedItems });
+
+        const payload = JSON.stringify({ selectedItems: to_add });
+
+        // console.log('payload:', payload);
 
         try {
             const response = await fetch(API_ENDPOINT, {
