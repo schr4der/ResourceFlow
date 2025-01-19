@@ -1,0 +1,42 @@
+.button:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.cards {
+  display: flex;
+  margin-top: 30vh;
+  gap: 10vw;
+  color: black;
+  font-weight: bold;
+}
+
+.requestcard {
+  width: 18vw;
+  height: 50vh;
+  background-color: #bce3ff;
+  text-align: center;
+  border-radius: 15%;
+  padding: 15px;
+}
+
+.donatecard {
+  width: 18vw;
+  height: 50vh;
+  background-color: #bce3ff;
+  text-align: center;
+  border-radius: 15%;
+  padding: 15px;
+}
+
+.requestTitle,
+.donateTitle {
+  font-size: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.requestDes,
+.donateDes {
+  font-size: 25px;
+}

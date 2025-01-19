@@ -8,11 +8,11 @@ const NavBar = ({ user, onLogout }) => {
         <Link to="/" className="link" style={styles.link}>Home</Link>
       </div>
       <div className="rightNavBar" style={styles.navLinks}>
-        <Link to="/addingpage" className="link" style={styles.link}>Add</Link>
+        <Link to="/addingpage" className="link" style={styles.link}>Donate</Link>
         <Link to="/requestpage" className="link" style={styles.link}>Request</Link>
-     
+
         <Link to="/dashboardpage" className="link" style={styles.link}>Dashboard</Link>
-    
+
         {user && (
           <button onClick={onLogout} style={styles.logoutButton}>Log Out</button>
         )}
@@ -23,9 +23,7 @@ const NavBar = ({ user, onLogout }) => {
 
 const styles = {
   navbar: {
-    backgroundColor: '#29660C', // Green background
     padding: '10px 20px', // Padding for spacing
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -36,17 +34,18 @@ const styles = {
     alignItems: 'center',
   },
   link: {
-    color: 'white', // White text color
+    color: 'black', // White text color
     textDecoration: 'none', // Remove underline
-    fontSize: '18px', // Font size
+    fontSize: '28px', // Font size
     padding: '8px 16px', // Padding for clickable area
     borderRadius: '4px', // Rounded corners
     transition: 'background-color 0.3s ease',
+    fontWeight: "bold",
   },
   logoutButton: {
     backgroundColor: 'transparent', // No background
-    color: 'white', // White text
-    border: '1px solid white', // White border
+    color: 'black', // White text
+    border: '1px solid black', // White border
     padding: '8px 16px', // Padding to match other links
     borderRadius: '4px', // Rounded corners
     cursor: 'pointer',
