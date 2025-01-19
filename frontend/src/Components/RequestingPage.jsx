@@ -31,14 +31,17 @@ const RequestingPage = () => {
         const data = await response.json();
         console.log("Fetched Inventory:", data);
 
-        const searchedItem = localStorage.getItem("item");
+        const searchedItem = JSON.parse(localStorage.getItem("item"));
+        console.log(
+          searchedItem,
+          searchedItem?.toLowerCase() === "bottled water".toLowerCase()
+        );
 
-        console.log(searchedItem);
         const updatedItems = data.items.map((item) => ({
           id: item.id,
           name: item.name,
           quantity: 1,
-          checked: item.name === searchedItem, // Check if item name matches searchedItem
+          checked: item.name === searchedItem,
         }));
 
         setItems(updatedItems);
