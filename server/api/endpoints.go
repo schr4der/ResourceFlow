@@ -14,34 +14,33 @@ func Health(c *gin.Context) {
 }
 
 func GetInventory(db *sql.DB) func(c *gin.Context) {
-  return func(c *gin.Context) {
-    query := c.Param("query")
-    items := process.GetItems(db, query) 
+	return func(c *gin.Context) {
+		query := c.Param("query")
+		items := process.GetItems(db, query)
 
-	if items == nil { // if not items found
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch inventory"})
-		return
+		if items == nil { // if not items found
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch inventory"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"items": items})
 	}
-	
-	c.JSON(http.StatusOK, gin.H{"items": items})
-  }
 }
 
 func AddItem(db *sql.DB) func(c *gin.Context) {
-  return func(c *gin.Context) {
-    var items []model.Item
+	return func(c *gin.Context) {
+		var items []model.Item
 
-    err := c.ShouldBindJSON(&items)
-    if err != nil {
-      c.Status(http.StatusBadRequest)
-    }
-    
-    addErr := process.AddItems(db, items)
-    print("YO")
-    if addErr != nil {
-      c.Status(http.StatusInternalServerError)
-    }
+		err := c.ShouldBindJSON(&items)
+		if err != nil {
+			c.Status(http.StatusBadRequest)
+		}
 
-    c.Status(http.StatusOK)
-  }
+		addErr := process.AddItems(db, items)
+		if addErr != nil {
+			c.Status(http.StatusInternalServerError)
+		}
+
+		c.Status(http.StatusCreated)
+	}
 }
