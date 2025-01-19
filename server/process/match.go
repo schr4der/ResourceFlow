@@ -23,8 +23,6 @@ func Match(db *sql.DB) ([]model.Match, error) {
 		requesters = append(requesters, requester)
 	}
 
-	fmt.Println(requesters)
-
 	var donators []model.SelectItem
 	donatorRows, err := db.Query("SELECT person_id, item_id, quantity FROM donator;")
 	if err != nil {
@@ -38,7 +36,24 @@ func Match(db *sql.DB) ([]model.Match, error) {
 		}
 		donators = append(donators, donator)
 	}
-	fmt.Println(donators)
+
+  for i, requester := range(requesters) {
+    for j, donator := range(donators) {
+      if requester.ItemID == donator.ItemID {
+        matchedAmount := min(donator.Quantity, requester.Quantity)
+        matches = append(matches, model.Match{
+          requester.PersonID,
+          donator.PersonID,
+          donator.ItemID,
+          matchedAmount,
+        })
+        donators[j].Quantity = donators[j].Quantity - matchedAmount 
+        requesters[i].Quantity = requesters[i].Quantity - matchedAmount 
+      }
+    }
+  }
+
+  fmt.Println(matches)
 
 	return matches, nil
 }

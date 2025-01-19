@@ -33,8 +33,6 @@ CREATE TABLE requester (
     FOREIGN KEY (item_id) REFERENCES inventory(id) ON DELETE CASCADE ON UPDATE CASCADE -- Fixed table name
 );
 
--- Insert sample data
-INSERT INTO people (id, name, email, location) VALUES (1, 'test_user', 'gill.anisha@outlook.com', 'UBC');
 
 -- Adder triggers
 CREATE TRIGGER increment_inventory_quantity
