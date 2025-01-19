@@ -25,7 +25,9 @@ func main() {
 	router.Use(cors.Default()) // This will allow all origins, you can customize it if needed
 	router.GET("/", api.Health)
 	router.GET("/inventory", api.GetInventory(db))
-	router.POST("/add-item", api.AddItem(db))
+	router.POST("/add-items", api.AddItem(db))
+  router.POST("/donate-items", api.DonateItem(db))
+  router.POST("/request-items", api.RequestItem(db))
 
 	router.Run(":8080")
 }

@@ -44,3 +44,39 @@ func AddItem(db *sql.DB) func(c *gin.Context) {
 		c.Status(http.StatusCreated)
 	}
 }
+
+func DonateItem(db *sql.DB) func(c *gin.Context) {
+  return func (c *gin.Context) {
+    var selectedItems []model.SelectItem
+
+		err := c.ShouldBindJSON(&selectedItems)
+		if err != nil {
+			c.Status(http.StatusBadRequest)
+		}
+
+		addErr := process.DonateItems(db, selectedItems)
+		if addErr != nil {
+			c.Status(http.StatusInternalServerError)
+		}
+
+    c.Status(http.StatusCreated)
+  }
+}
+
+func RequestItem(db *sql.DB) func(c *gin.Context) {
+  return func (c *gin.Context) {
+    var selectedItems []model.SelectItem
+
+		err := c.ShouldBindJSON(&selectedItems)
+		if err != nil {
+			c.Status(http.StatusBadRequest)
+		}
+
+		addErr := process.RequestItems(db, selectedItems)
+		if addErr != nil {
+			c.Status(http.StatusInternalServerError)
+		}
+
+    c.Status(http.StatusCreated)
+  }
+}
