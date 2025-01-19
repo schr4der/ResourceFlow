@@ -1,24 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const suggestions = [
-    'React',
-    'JavaScript',
-    'HTML',
-    'CSS',
-    'Node.js',
-    'Python',
-    'Java',
-    'C++',
-];
-
-
 const LandingPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [inventory, setInventory] = useState([]); // Initialize as empty array
     const containerRef = useRef(null);
 
     useEffect(() => {
+        // Fetch inventory on page load
+        const fetchInventory = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/inventory');
+                const data = await response.json();
+                console.log('Fetched Inventory:', data);  // Log the response for debugging
+                if (data && Array.isArray(data.items)) {
+                    setInventory(data.items);  // Set inventory to the 'items' array
+                } else {
+                    console.error('Fetched data is not in the expected format:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching inventory:', error);
+            }
+        };
+        fetchInventory();
+    }, []);
+
+    useEffect(() => {
+        // Hide suggestions when clicking outside
         const handleClickOutside = (event) => {
             if (containerRef.current && !containerRef.current.contains(event.target)) {
                 setShowSuggestions(false);
@@ -36,9 +45,12 @@ const LandingPage = () => {
         setSearchTerm(value);
 
         if (value) {
-            const filtered = suggestions.filter((suggestion) =>
-                suggestion.toLowerCase().includes(value.toLowerCase())
-            );
+            // Filter suggestions from the fetched inventory
+            const filtered = inventory
+                .map(item => item.name)  // Access 'name' field from each item
+                .filter((suggestion) =>
+                    suggestion.toLowerCase().includes(value.toLowerCase())
+                );
             setFilteredSuggestions(filtered);
             setShowSuggestions(true);
         } else {
@@ -47,25 +59,14 @@ const LandingPage = () => {
         }
     };
 
+    const handleSuggestionClick = (suggestion) => {
+        setSearchTerm(suggestion);  // Set the input field to the clicked suggestion
+        setShowSuggestions(false);  // Hide the suggestion list
+    };
+
     const handleGoClick = () => {
         alert(`You searched for: ${searchTerm}`);
     };
-
-
-const fetchInventory = async () => {
-    try {
-        const response = await fetch('http://localhost:8080/inventory');
-        const data = await response.json();
-        console.log(data);
-    } catch (error) {
-        console.error('Error fetching inventory:', error);
-    }
-};
-
-useEffect(() => {
-    fetchInventory();
-    
-}, []);
 
     return (
         <div style={styles.container}>
@@ -82,7 +83,11 @@ useEffect(() => {
                 {showSuggestions && (
                     <ul style={styles.suggestionList}>
                         {filteredSuggestions.map((suggestion, index) => (
-                            <li key={index} style={styles.suggestionItem}>
+                            <li
+                                key={index}
+                                style={styles.suggestionItem}
+                                onClick={() => handleSuggestionClick(suggestion)}  // Add onClick handler
+                            >
                                 {suggestion}
                             </li>
                         ))}
