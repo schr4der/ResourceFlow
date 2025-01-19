@@ -14,7 +14,7 @@ type SelectItem struct {
 }
 
 type Match struct {
-	Person1Name string `json:person1_name`
+	Person1Name string `json:"person1_name"`
 	Person2Name string `json:"person2_name"`
 	ItemName    string `json:"item_name"`
 	Quantity    int    `json:"quantity"`
