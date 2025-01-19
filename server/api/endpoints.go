@@ -24,3 +24,9 @@ func GetInventory(db *sql.DB) func(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"items": items})
   }
 }
+
+func AddInventory(db *sql.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+
+	}
+}
