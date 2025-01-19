@@ -10,6 +10,7 @@ const AddingPage = () => {
     const [items, setItems] = useState(data);
     const [customItem, setCustomItem] = useState('');
     const [customQuantity, setCustomQuantity] = useState(0);
+    const [customDescription, setCustomDescription] = useState(''); // New state for description
 
     const handleQuantityChange = (index, quantity) => {
         const updatedItems = [...items];
@@ -89,12 +90,54 @@ const AddingPage = () => {
         }
     };
 
-    const handleAddCustomItem = () => {
-        if (customItem) {
-        setItems([...items, { name: customItem, checked: false, quantity: customQuantity }]);
+    const handleAddCustomItem = async () => {
+        let to_add = [];
+
+        if (!customItem.trim()) {
+            alert('Error: Please enter a valid item name.');
+            return;
+        }
+
+        if (!customDescription.trim()) {
+            alert('Error: Please enter a valid description.');
+            return;
+        }
+
+        // if (customQuantity === 0) {
+        //     alert('Error: Please select a valid quantity.');
+        //     return;
+        // }
+
+        console.log("customitem: ", customItem);
+        console.log("customDescription: ", customDescription);
+
+        to_add.push({ item: customItem, description: customDescription, quantity: 0});
+
+        const payload = JSON.stringify(to_add);
+
+        console.log("payload:", payload);
+        
+        // setItems([...items, { name: customItem, checked: false, quantity: customQuantity }]);
+        
+        try {
+            const response = await fetch(API_ENDPOINT_POST, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: payload,
+            });
+
+            const result = await response;
+            console.log('Success:', result);
+            alert('Data submitted successfully!');
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the data.',error);
+        }
+
         setCustomItem('');
         setCustomQuantity(0);
-        }
     };
 
 
@@ -150,17 +193,24 @@ const AddingPage = () => {
                     placeholder="Custom Item Name"
                     style={styles.searchInput}
                     />
-                    <select
+                    <input
+                        type="text"
+                        value={customDescription} // New input for description
+                        onChange={(e) => setCustomDescription(e.target.value)}
+                        placeholder="Custom Item Description"
+                        style={styles.searchInput}
+                    />
+                    {/* <select
                     value={customQuantity}
                     onChange={(e) => setCustomQuantity(e.target.value)}
                     style={styles.select}
                     >
                     {[...Array(100)].map((_, number) => (
-                        <option key={number + 1} value={number + 1}>
-                            {number + 1}
+                        <option key={number} value={number}>
+                            {number}
                         </option>
                     ))}
-                    </select>
+                    </select> */}
                     <button onClick={handleAddCustomItem} style={styles.custom_button}>
                         Add Custom Item
                     </button>
