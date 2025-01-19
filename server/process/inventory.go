@@ -2,6 +2,7 @@ package process
 
 import (
 	"database/sql"
+  "fmt"
 	"log"
 	"resourceflow/model"
 	"strings"
@@ -38,7 +39,7 @@ func GetItems(db *sql.DB, query string) []model.Item {
 }
 
 func AddItems(db *sql.DB, items []model.Item) error {
-  sqlTempl:= "INSERT INTO inventory (name, description) VALUES (.Name, .Description);"
+  sqlTempl:= "INSERT INTO inventory (name, description, quantity) VALUES ('{{.Name}}', '{{.Description}}', {{.Quantity}});"
   t, err := template.New("sqlQuery").Parse(sqlTempl)
   if err != nil {
     return err
@@ -50,7 +51,7 @@ func AddItems(db *sql.DB, items []model.Item) error {
     if err != nil {
       return err
     }
-    db.Query(sqlQuery.String())
+    db.Exec(sqlQuery.String())
   }
 
   return nil

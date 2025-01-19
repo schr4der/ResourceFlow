@@ -37,6 +37,7 @@ func AddItem(db *sql.DB) func(c *gin.Context) {
     }
     
     addErr := process.AddItems(db, items)
+    print("YO")
     if addErr != nil {
       c.Status(http.StatusInternalServerError)
     }
