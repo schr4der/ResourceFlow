@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"log"
 	"resourceflow/model"
+	"strings"
+	"text/template"
 )
 
 func GetItems(db *sql.DB, query string) []model.Item {
@@ -35,6 +37,21 @@ func GetItems(db *sql.DB, query string) []model.Item {
 	return items
 }
 
-func AddItems(db *sql.DB, items []model.Item) {
-	
+func AddItems(db *sql.DB, items []model.Item) error {
+  sqlTempl:= "INSERT INTO inventory (name, description) VALUES (.Name, .Description);"
+  t, err := template.New("sqlQuery").Parse(sqlTempl)
+  if err != nil {
+    return err
+  }
+  
+  for _, item := range(items) {
+    var sqlQuery strings.Builder
+    err = t.Execute(&sqlQuery, item)
+    if err != nil {
+      return err
+    }
+    db.Query(sqlQuery.String())
+  }
+
+  return nil
 }

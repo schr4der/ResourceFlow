@@ -1,13 +1,12 @@
 package main
 
 import (
+	"database/sql"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-  "resourceflow/api"
-  "database/sql"
-  "os"
-  _ "github.com/mattn/go-sqlite3" 
-  "github.com/gin-contrib/cors"
-
+	_ "github.com/mattn/go-sqlite3"
+	"os"
+	"resourceflow/api"
 )
 
 var dbFile = os.Getenv("DATABASE_FILE")
@@ -21,12 +20,12 @@ func main() {
 
 	defer db.Close()
 
-	
 	// Setup Routes
 	router := gin.Default()
 	router.Use(cors.Default()) // This will allow all origins, you can customize it if needed
 	router.GET("/", api.Health)
 	router.GET("/inventory", api.GetInventory(db))
+	router.POST("/add-item", api.AddItem(db))
 
 	router.Run(":8080")
 }

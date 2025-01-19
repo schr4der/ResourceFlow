@@ -1,10 +1,12 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-  "database/sql"
+	"database/sql"
 	"net/http"
-  "resourceflow/process"
+	"resourceflow/model"
+	"resourceflow/process"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Health(c *gin.Context) {
@@ -22,5 +24,23 @@ func GetInventory(db *sql.DB) func(c *gin.Context) {
 	}
 	
 	c.JSON(http.StatusOK, gin.H{"items": items})
+  }
+}
+
+func AddItem(db *sql.DB) func(c *gin.Context) {
+  return func(c *gin.Context) {
+    var items []model.Item
+
+    err := c.ShouldBindJSON(&items)
+    if err != nil {
+      c.Status(http.StatusBadRequest)
+    }
+    
+    addErr := process.AddItems(db, items)
+    if addErr != nil {
+      c.Status(http.StatusInternalServerError)
+    }
+
+    c.Status(http.StatusOK)
   }
 }
