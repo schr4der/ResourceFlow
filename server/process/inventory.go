@@ -124,13 +124,13 @@ func DonatedItems(db *sql.DB) ([]model.SelectItemNames, error) {
   }
 
   var items []model.Item
-	itemRows, err := db.Query("SELECT id, name, description FROM inventory;")
+	itemRows, err := db.Query("SELECT id, name, description, quantity FROM inventory;")
 	if err != nil {
 		return donatedItems, err
 	}
 	for itemRows.Next() {
 		var item model.Item 
-		err := itemRows.Scan(&item.Id, &item.Name, &item.Description)
+		err := itemRows.Scan(&item.Id, &item.Name, &item.Description, &item.Quantity)
 		if err != nil {
 			return donatedItems, err
 		}
@@ -190,13 +190,13 @@ func RequestedItems(db *sql.DB) ([]model.SelectItemNames, error) {
   }
 
   var items []model.Item
-	itemRows, err := db.Query("SELECT id, name, description FROM inventory;")
+	itemRows, err := db.Query("SELECT id, name, description, quantity FROM inventory;")
 	if err != nil {
 		return requestedItems, err
 	}
 	for itemRows.Next() {
 		var item model.Item 
-		err := itemRows.Scan(&item.Id, &item.Name, &item.Description)
+		err := itemRows.Scan(&item.Id, &item.Name, &item.Description, &item.Quantity)
 		if err != nil {
 			return requestedItems, err
 		}
