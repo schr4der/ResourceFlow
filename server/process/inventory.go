@@ -106,17 +106,33 @@ func DonateItems(db *sql.DB, selectedItems []model.SelectItem) error {
 	return nil
 }
 
-func DonatedItems(db *sql.DB) ([]model.Item, error) {
+func DonatedItems(db *sql.DB) ([]model.SelectItemNames, error) {
+  var donatedItems []model.SelectItemNames
+
+  var people []model.Person
+	peopleRows, err := db.Query("SELECT id, name, email, location FROM people;")
+	if err != nil {
+		return donatedItems, err
+	}
+	for peopleRows.Next() {
+		var person model.Person
+		err := peopleRows.Scan(&person.ID, &person.Name, &person.Email, &person.Location)
+		if err != nil {
+			return donatedItems, err
+		}
+		people = append(people, person)
+  }
+
   var items []model.Item
 	itemRows, err := db.Query("SELECT id, name, description FROM inventory;")
 	if err != nil {
-		return items, err
+		return donatedItems, err
 	}
 	for itemRows.Next() {
 		var item model.Item 
 		err := itemRows.Scan(&item.Id, &item.Name, &item.Description)
 		if err != nil {
-			return items, err
+			return donatedItems, err
 		}
 		items = append(items, item)
 	}
@@ -124,37 +140,56 @@ func DonatedItems(db *sql.DB) ([]model.Item, error) {
 	var donaters []model.SelectItem
 	donateRows, err := db.Query("SELECT person_id, item_id, quantity FROM donator;")
 	if err != nil {
-		return items, err
+		return donatedItems, err
 	}
 	for donateRows.Next() {
 		var donater model.SelectItem
 		err := donateRows.Scan(&donater.PersonID, &donater.ItemID, &donater.Quantity)
 		if err != nil {
-			return items, err
+			return donatedItems, err
 		}
 		donaters = append(donaters, donater)
 	}
   
-  var donatedItems []model.Item
   for _, selectItem := range(donaters) {
-    donatedItems = append(donatedItems, items[selectItem.ItemID])
+    donatedItems = append(donatedItems, model.SelectItemNames{
+      people[selectItem.PersonID - 1].Name,
+      items[selectItem.ItemID - 1].Name,
+      items[selectItem.ItemID - 1].Quantity,
+    })
   }
   
 
   return donatedItems, nil
 }
 
-func RequestedItems(db *sql.DB) ([]model.Item, error) {
+func RequestedItems(db *sql.DB) ([]model.SelectItemNames, error) {
+  var requestedItems []model.SelectItemNames
+
+  var people []model.Person
+	peopleRows, err := db.Query("SELECT id, name, email, location FROM people;")
+	if err != nil {
+		return requestedItems, err
+	}
+	for peopleRows.Next() {
+		var person model.Person
+		err := peopleRows.Scan(&person.ID, &person.Name, &person.Email, &person.Location)
+		if err != nil {
+			return requestedItems, err
+		}
+		people = append(people, person)
+  }
+
   var items []model.Item
 	itemRows, err := db.Query("SELECT id, name, description FROM inventory;")
 	if err != nil {
-		return items, err
+		return requestedItems, err
 	}
 	for itemRows.Next() {
 		var item model.Item 
 		err := itemRows.Scan(&item.Id, &item.Name, &item.Description)
 		if err != nil {
-			return items, err
+			return requestedItems, err
 		}
 		items = append(items, item)
 	}
@@ -162,20 +197,23 @@ func RequestedItems(db *sql.DB) ([]model.Item, error) {
 	var requesters []model.SelectItem
 	requestRows, err := db.Query("SELECT person_id, item_id, quantity FROM requester;")
 	if err != nil {
-		return items, err
+		return requestedItems, err
 	}
 	for requestRows.Next() {
 		var requester model.SelectItem
 		err := requestRows.Scan(&requester.PersonID, &requester.ItemID, &requester.Quantity)
 		if err != nil {
-			return items, err
+			return requestedItems, err
 		}
 		requesters = append(requesters, requester)
 	}
   
-  var requestedItems []model.Item
   for _, selectItem := range(requesters) {
-    requestedItems = append(requestedItems, items[selectItem.ItemID])
+    requestedItems = append(requestedItems, model.SelectItemNames{
+      people[selectItem.PersonID - 1].Name,
+      items[selectItem.ItemID - 1].Name,
+      items[selectItem.ItemID - 1].Quantity,
+    })
   }
   
 

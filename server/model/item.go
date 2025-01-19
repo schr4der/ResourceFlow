@@ -13,6 +13,12 @@ type SelectItem struct {
 	Quantity int `json:"quantity"`
 }
 
+type SelectItemNames struct {
+	PersonName string `json:"person_name"`
+	ItemName   string `json:"item_name"`
+	Quantity   int `json:"quantity"`
+}
+
 type Match struct {
 	Person1Name string `json:"person1_name"`
 	Person2Name string `json:"person2_name"`
@@ -21,8 +27,8 @@ type Match struct {
 }
 
 type Person struct {
-  ID int    `json:"id"`
-  Name     string `json:"name"`
-  Email    string `json:"email"`
-  Location string `json:"location"`
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Location string `json:"location"`
 }
