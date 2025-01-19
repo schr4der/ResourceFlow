@@ -50,7 +50,54 @@ func AddItems(db *sql.DB, items []model.Item) error {
     if err != nil {
       return err
     }
-    db.Exec(sqlQuery.String())
+    _, err := db.Exec(sqlQuery.String())
+    if err != nil {
+      return err
+    }
+  }
+
+  return nil
+}
+
+func RequestItems(db *sql.DB, selectedItems []model.SelectItem) error {
+  sqlTempl:= "INSERT INTO requester (person_id, item_id, quantity) VALUES ({{.PersonID}}, {{.ItemID}}, {{.Quantity}});"
+  t, err := template.New("sqlQuery").Parse(sqlTempl)
+  if err != nil {
+    return err
+  }
+  
+  for _, selectedItem := range(selectedItems) {
+    var sqlQuery strings.Builder
+    err = t.Execute(&sqlQuery, selectedItem)
+    if err != nil {
+      return err
+    }
+    _, err := db.Exec(sqlQuery.String())
+    if err != nil {
+      return err
+    }
+  }
+
+  return nil
+}
+
+func DonateItems(db *sql.DB, selectedItems []model.SelectItem) error {
+  sqlTempl:= "INSERT INTO donator (person_id, item_id, quantity) VALUES ({{.PersonID}}, {{.ItemID}}, {{.Quantity}});"
+  t, err := template.New("sqlQuery").Parse(sqlTempl)
+  if err != nil {
+    return err
+  }
+  
+  for _, selectedItem := range(selectedItems) {
+    var sqlQuery strings.Builder
+    err = t.Execute(&sqlQuery, selectedItem)
+    if err != nil {
+      return err
+    }
+    _, err := db.Exec(sqlQuery.String())
+    if err != nil {
+      return err
+    }
   }
 
   return nil
