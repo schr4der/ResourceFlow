@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 const data = [];
 
 const API_ENDPOINT = 'http://localhost:8080/inventory';
+const API_ENDPOINT_POST = 'http://localhost:8080/request-items';
+
 
 const AddingPage = () => {
     const [items, setItems] = useState(data);
@@ -67,10 +69,10 @@ const AddingPage = () => {
         const payload = JSON.stringify(to_add);
         
 
-        // console.log('payload:', payload);
+        console.log('payload:', payload);
 
         try {
-            const response = await fetch(API_ENDPOINT, {
+            const response = await fetch(API_ENDPOINT_POST, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,90 +80,95 @@ const AddingPage = () => {
                 body: payload,
             });
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const result = await response.json();
+            const result = await response;
             console.log('Success:', result);
             alert('Data submitted successfully!');
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while submitting the data.');
+            alert('An error occurred while submitting the data.',error);
         }
     };
 
-    // const handleAddCustomItem = () => {
-    //     if (customItem) {
-    //     setItems([...items, { name: customItem, checked: false, quantity: customQuantity }]);
-    //     setCustomItem('');
-    //     setCustomQuantity(0);
-    //     }
-    // };
+    const handleAddCustomItem = () => {
+        if (customItem) {
+        setItems([...items, { name: customItem, checked: false, quantity: customQuantity }]);
+        setCustomItem('');
+        setCustomQuantity(0);
+        }
+    };
 
 
     return (
-        <div style={styles.container}>
-            <h1 style={styles.header}>Add Items</h1>
-            <p style={styles.description}>Select items, choose quantities, and proceed to submit your request.</p>
-            <ul style={styles.list}>
-                {items.map((item, index) => (
-                    <li key={index} style={styles.listItem}>
-                        <input
-                            type="checkbox"
-                            checked={item.checked || false}
-                            onChange={() => handleCheckboxChange(index)}
-                            style={{
-                                width: '30px',
-                                height: '30px', 
-                                marginRight: '10px',
-                                cursor: 'pointer',
-                                accentColor: 'green',
-                            }}
-                        />
-                        <span style={styles.itemName}>{item.name}</span>
-                        <select
-                            value={item.quantity}
-                            onChange={(e) => handleQuantityChange(index, e.target.value)}
-                            style={styles.select}
-                        >
-                            {[...Array(11).keys()].map((number) => (
-                                <option key={number} value={number}>
-                                    {number}
-                                </option>
+        <div>
+            <div style={styles.container}>
+                <h1 style={styles.header}>Add Items</h1>
+                <p style={styles.description}>Select items, choose quantities, and proceed to submit your request.</p>
+                <ul style={styles.list}>
+                    {items.map((item, index) => (
+                        <li key={index} style={styles.listItem}>
+                            <input
+                                type="checkbox"
+                                checked={item.checked || false}
+                                onChange={() => handleCheckboxChange(index)}
+                                style={{
+                                    width: '30px',
+                                    height: '30px', 
+                                    marginRight: '10px',
+                                    cursor: 'pointer',
+                                    accentColor: 'green',
+                                }}
+                            />
+                            <span style={styles.itemName}>{item.name}</span>
+                            <select
+                                value={1}
+                                onChange={(e) => handleQuantityChange(index, e.target.value)}
+                                style={styles.select}
+                            >
+                            {[...Array(100)].map((_, index) => (
+                            <option key={index + 1} value={index + 1}>
+                                {index + 1}
+                            </option>
                             ))}
-                        </select>
-                    </li>
-                ))}
-            </ul>
+                            </select>
+                        </li>
+                    ))}
+                </ul>
 
-        <p style={styles.description}>Item missing from the list</p>
+                <button onClick={handleNext} style={styles.button}>
+                    Submit
+                </button>
+            </div>
 
-        <div style={styles.customInputContainer}>
-            <input
-            type="text"
-            value={customItem}
-            onChange={(e) => setCustomItem(e.target.value)}
-            placeholder="Custom item name"
-            style={styles.searchInput}
-            />
-            <select
-            value={customQuantity}
-            onChange={(e) => setCustomQuantity(e.target.value)}
-            style={styles.select}
-            >
-            {[...Array(1001).keys()].map((number) => (
-                <option key={number} value={number}>
-                {number}
-                </option>
-            ))}
-            </select>
+            <div style={styles.container}>
+                <p style={styles.description}>Don't see your item in the list? Add it below.</p>
+
+                <div style={styles.customInputContainer}>
+                    <input
+                    type="text"
+                    value={customItem}
+                    onChange={(e) => setCustomItem(e.target.value)}
+                    placeholder="Custom Item Name"
+                    style={styles.searchInput}
+                    />
+                    <select
+                    value={customQuantity}
+                    onChange={(e) => setCustomQuantity(e.target.value)}
+                    style={styles.select}
+                    >
+                    {[...Array(100)].map((_, number) => (
+                        <option key={number + 1} value={number + 1}>
+                            {number + 1}
+                        </option>
+                    ))}
+                    </select>
+                    <button onClick={handleAddCustomItem} style={styles.custom_button}>
+                        Add Custom Item
+                    </button>
+                </div>
+            </div>
         </div>
 
-            <button onClick={handleNext} style={styles.button}>
-                Next
-            </button>
-        </div>
+
     );
 };
 
@@ -178,17 +185,17 @@ const styles = {
     },
     searchInput: {
         flex: 1,
-        padding: "12px 20px",
-        fontSize: "16px",
-        borderRadius: "25px 0 0 25px",
-        border: "1px solid #ccc",
-        outline: "none",
+        padding: '12px 20px',
+        fontSize: '16px',
+        borderRadius: '25px',
+        border: '1px solid #ccc',
+        outline: 'none',
     },
     customInputContainer: {
-        display: "flex",
-        alignItems: "center",
-        gap: "10px",
-        marginBottom: "20px",
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        marginBottom: '20px',
     },
     header: {
         textAlign: 'center',
@@ -204,6 +211,8 @@ const styles = {
         listStyleType: 'none',
         padding: 0,
         marginBottom: '20px',
+        height: "500px",
+        overflowY: "auto",
     },
     listItem: {
         display: 'flex',
@@ -233,6 +242,19 @@ const styles = {
     button: {
         display: 'block',
         width: '100%',
+        padding: '10px 20px',
+        fontSize: '16px',
+        color: '#fff',
+        backgroundColor: '#29660C',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease',
+    },
+    custom_button: {
+        display: 'block',
+        width: '25%',
+        height: 'auto',
         padding: '10px 20px',
         fontSize: '16px',
         color: '#fff',
