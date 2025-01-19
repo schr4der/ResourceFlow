@@ -13,7 +13,7 @@ var dbFile = os.Getenv("DATABASE_FILE")
 
 func main() {
 	// Connect to the database
-	db, err := sql.Open("sqlite3", dbFile)
+	db, err := sql.Open("sqlite3", "example.db")
 	if err != nil {
 		panic(err)
 	}

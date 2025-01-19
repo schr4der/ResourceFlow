@@ -2,6 +2,8 @@ FROM golang:1.23-alpine
  
 COPY . .
 
+ENV DATABASE_FILE="example.db"
+
 RUN go build
 
 EXPOSE 8080
