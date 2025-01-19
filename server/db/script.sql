@@ -35,3 +35,22 @@ CREATE TABLE requester (
 
 -- Insert sample data
 INSERT INTO people (id, name, email, location) VALUES (1, 'test_user', 'gill.anisha@outlook.com', 'UBC');
+
+-- Adder triggers
+CREATE TRIGGER increment_inventory_quantity
+AFTER INSERT ON donator
+FOR EACH ROW
+BEGIN
+    UPDATE inventory
+    SET quantity = quantity + NEW.quantity
+    WHERE id = NEW.item_id;
+END;
+
+CREATE TRIGGER decrement_inventory_quantity
+AFTER INSERT ON requester
+FOR EACH ROW
+BEGIN
+    UPDATE inventory
+    SET quantity = quantity - NEW.quantity
+    WHERE id = NEW.item_id;
+END;
