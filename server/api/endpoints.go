@@ -96,3 +96,25 @@ func Match(db *sql.DB) func(c *gin.Context) {
 		c.JSON(http.StatusOK, matches)
 	}
 }
+
+func DonatedItems(db *sql.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+    items, err := process.DonatedItems(db)
+    if err != nil {
+      c.Status(http.StatusInternalServerError)
+      return 
+    }
+		c.JSON(http.StatusOK, items)
+	}
+}
+
+func RequestedItems(db *sql.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+    items, err := process.RequestedItems(db)
+    if err != nil {
+      c.Status(http.StatusInternalServerError)
+      return 
+    }
+		c.JSON(http.StatusOK, items)
+	}
+}
