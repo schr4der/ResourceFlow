@@ -64,7 +64,7 @@ const RequestingPage = () => {
 
     checkedItems.forEach((item) => {
       to_add.push({
-        person_id: 0,
+        person_id: 1, // Make this dynamic in the future
         item_id: parseInt(item.id),
         quantity: item.quantity,
       });
@@ -109,7 +109,7 @@ const RequestingPage = () => {
     console.log("customDescription: ", customDescription);
 
     to_add.push({
-      item: customItem,
+      name: customItem,
       description: customDescription,
       quantity: 0,
     });

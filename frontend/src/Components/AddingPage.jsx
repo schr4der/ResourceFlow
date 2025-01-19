@@ -58,7 +58,7 @@ const AddingPage = () => {
 
     checkedItems.forEach((item) => {
       to_add.push({
-        person_id: 0,
+        person_id: 1,
         item_id: parseInt(item.id),
         quantity: item.quantity,
       });
@@ -103,7 +103,7 @@ const AddingPage = () => {
     console.log("customDescription: ", customDescription);
 
     to_add.push({
-      item: customItem,
+      name: customItem,
       description: customDescription,
       quantity: 0,
     });
