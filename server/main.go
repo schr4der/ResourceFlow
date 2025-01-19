@@ -26,8 +26,9 @@ func main() {
 	router.GET("/", api.Health)
 	router.GET("/inventory", api.GetInventory(db))
 	router.POST("/add-items", api.AddItem(db))
-  router.POST("/donate-items", api.DonateItem(db))
-  router.POST("/request-items", api.RequestItem(db))
+	router.POST("/donate-items", api.DonateItem(db))
+	router.POST("/request-items", api.RequestItem(db))
+	router.GET("/match", api.Match(db))
 
 	router.Run(":8080")
 }
