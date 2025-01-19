@@ -151,13 +151,22 @@ func DonatedItems(db *sql.DB) ([]model.SelectItemNames, error) {
 		donaters = append(donaters, donater)
 	}
   
-  for _, selectItem := range(donaters) {
-    donatedItems = append(donatedItems, model.SelectItemNames{
-      people[selectItem.PersonID - 1].Name,
-      items[selectItem.ItemID - 1].Name,
-      items[selectItem.ItemID - 1].Quantity,
-    })
-  }
+	for _, selectItem := range donaters {
+		// Validate indices before accessing slices
+		if selectItem.PersonID <= 0 || selectItem.PersonID > len(people) {
+			continue
+		}
+		if selectItem.ItemID <= 0 || selectItem.ItemID > len(items) {
+			continue
+		}
+	
+		donatedItems = append(donatedItems, model.SelectItemNames{
+			PersonName:     people[selectItem.PersonID-1].Name,
+			ItemName: items[selectItem.ItemID-1].Name,
+			Quantity: selectItem.Quantity, // Assuming this is part of the model.SelectItem
+		})
+	}
+	
   
 
   return donatedItems, nil
@@ -208,13 +217,22 @@ func RequestedItems(db *sql.DB) ([]model.SelectItemNames, error) {
 		requesters = append(requesters, requester)
 	}
   
-  for _, selectItem := range(requesters) {
-    requestedItems = append(requestedItems, model.SelectItemNames{
-      people[selectItem.PersonID - 1].Name,
-      items[selectItem.ItemID - 1].Name,
-      items[selectItem.ItemID - 1].Quantity,
-    })
-  }
+	for _, selectItem := range requesters {
+		// Validate indices before accessing slices
+		if selectItem.PersonID <= 0 || selectItem.PersonID > len(people) {
+			continue
+		}
+		if selectItem.ItemID <= 0 || selectItem.ItemID > len(items) {
+			continue
+		}
+	
+		requestedItems = append(requestedItems, model.SelectItemNames{
+			PersonName:     people[selectItem.PersonID-1].Name,
+			ItemName: items[selectItem.ItemID-1].Name,
+			Quantity: selectItem.Quantity, // Assuming this is part of the model.SelectItem
+		})
+	}
+	
   
 
   return requestedItems, nil

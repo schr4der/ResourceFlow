@@ -70,7 +70,8 @@ const LandingPage = () => {
   };
 
   const handleGoClick = () => {
-    // TODO: Check box what we just searched for in the request list 
+    // TODO: Check box what we just searched for in the request list
+    localStorage.setItem("item", JSON.stringify(searchTerm));
   };
 
   return (
@@ -84,11 +85,14 @@ const LandingPage = () => {
           onChange={handleInputChange}
           style={styles.searchInput}
         />
-        <button onClick={handleGoClick} style={styles.goButton}>
-          <Link to="/requestpage" style={{ textDecoration: "none", color: "white" }}>
-          Go
-          </Link>
-        </button>
+        <Link
+          to="/requestpage"
+          style={{ textDecoration: "none", color: "white" }}
+        >
+          <button onClick={handleGoClick} style={styles.goButton}>
+            Go
+          </button>
+        </Link>
         {showSuggestions && (
           <ul style={styles.suggestionList}>
             {filteredSuggestions.map((suggestion, index) => (
