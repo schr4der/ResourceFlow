@@ -43,13 +43,13 @@ const styles = {
     fontWeight: "bold",
   },
   logoutButton: {
-    backgroundColor: 'transparent', // No background
-    color: 'black', // White text
-    border: '1px solid black', // White border
-    padding: '8px 16px', // Padding to match other links
-    borderRadius: '4px', // Rounded corners
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
+    padding: "10px 20px",
+    backgroundColor: "#29660C",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
   },
 };
 

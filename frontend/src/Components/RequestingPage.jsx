@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const data = [];
 
 const API_ENDPOINT = 'http://localhost:8080/inventory'; 
+const API_ENDPOINT_POST = 'http://localhost:8080/request-items';
 
 const RequestingPage = () => {
     const [items, setItems] = useState(data);
@@ -64,10 +65,9 @@ const RequestingPage = () => {
 
         const payload = JSON.stringify(to_add);
 
-        // console.log('payload:', payload);
 
         try {
-            const response = await fetch(API_ENDPOINT, {
+            const response = await fetch(API_ENDPOINT_POST, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,16 +75,12 @@ const RequestingPage = () => {
                 body: payload,
             });
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const result = await response.json();
+            const result = await response;
             console.log('Success:', result);
             alert('Data submitted successfully!');
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while submitting the data.');
+            alert('An error occurred while submitting the data.',error);
         }
     };
 

@@ -18,4 +18,6 @@ nav {
 
 .App {
     background-image: url('../public/bg.png');
+    padding-bottom: 10vh;
+    margin-bottom: -5vh;
 }

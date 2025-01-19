@@ -70,7 +70,7 @@ const LandingPage = () => {
   };
 
   const handleGoClick = () => {
-    alert(`You searched for: ${searchTerm}`);
+    // TODO: Check box what we just searched for in the request list 
   };
 
   return (
@@ -85,7 +85,9 @@ const LandingPage = () => {
           style={styles.searchInput}
         />
         <button onClick={handleGoClick} style={styles.goButton}>
+          <Link to="/requestpage" style={{ textDecoration: "none", color: "white" }}>
           Go
+          </Link>
         </button>
         {showSuggestions && (
           <ul style={styles.suggestionList}>

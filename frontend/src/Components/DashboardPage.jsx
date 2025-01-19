@@ -54,12 +54,8 @@ const Dashboard = () => {
       ) : (
         <div style={styles.dashboardContainer}>
           <h1 style={styles.message}>
-            Welcome to your dashboard, {user.name}!
+            Welcome {user.name}!
           </h1>
-          <p style={styles.details}>Email: {user.email}</p>
-          <button style={styles.logoutButton} onClick={handleLogout}>
-            Log Out
-          </button>
         </div>
       )}
     </div>
@@ -70,9 +66,8 @@ const styles = {
   container: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
     height: "100vh",
-    backgroundColor: "#f5f5f5",
+
   },
   signInContainer: {
     textAlign: "center",
