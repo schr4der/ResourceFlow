@@ -11,6 +11,7 @@ const suggestions = [
     'C++',
 ];
 
+
 const LandingPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -49,6 +50,22 @@ const LandingPage = () => {
     const handleGoClick = () => {
         alert(`You searched for: ${searchTerm}`);
     };
+
+
+const fetchInventory = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/inventory');
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error fetching inventory:', error);
+    }
+};
+
+useEffect(() => {
+    fetchInventory();
+    
+}, []);
 
     return (
         <div style={styles.container}>
