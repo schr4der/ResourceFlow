@@ -58,13 +58,13 @@ const RequestingPage = () => {
         }
         
         checkedItems.forEach(item => {
-            to_add.push({ person_id: 0, item_id: item.id, quantity: item.quantity});
+            to_add.push({ person_id: 0, item_id: parseInt(item.id), quantity: item.quantity});
         });
 
 
-        const payload = JSON.stringify({ selectedItems: to_add });
+        const payload = JSON.stringify(to_add);
 
-        console.log('payload:', payload);
+        // console.log('payload:', payload);
 
         try {
             const response = await fetch(API_ENDPOINT, {

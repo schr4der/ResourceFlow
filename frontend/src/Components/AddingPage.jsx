@@ -6,6 +6,8 @@ const API_ENDPOINT = 'http://localhost:8080/inventory';
 
 const AddingPage = () => {
     const [items, setItems] = useState(data);
+    const [customItem, setCustomItem] = useState('');
+    const [customQuantity, setCustomQuantity] = useState(0);
 
     const handleQuantityChange = (index, quantity) => {
         const updatedItems = [...items];
@@ -54,11 +56,15 @@ const AddingPage = () => {
             return;
         }
 
+        // checkedItems.forEach(item => {
+        //     to_add.push({ person_id: 0, item_id: item.id, quantity: item.quantity});
+        // });
+
         checkedItems.forEach(item => {
-            to_add.push({ person_id: 0, item_id: item.id, quantity: item.quantity});
+            to_add.push({ person_id: 0, item_id: parseInt(item.id), quantity: item.quantity});
         });
 
-        const payload = JSON.stringify({ selectedItems: to_add });
+        const payload = JSON.stringify(to_add);
         
 
         // console.log('payload:', payload);
@@ -84,6 +90,15 @@ const AddingPage = () => {
             alert('An error occurred while submitting the data.');
         }
     };
+
+    // const handleAddCustomItem = () => {
+    //     if (customItem) {
+    //     setItems([...items, { name: customItem, checked: false, quantity: customQuantity }]);
+    //     setCustomItem('');
+    //     setCustomQuantity(0);
+    //     }
+    // };
+
 
     return (
         <div style={styles.container}>
@@ -119,6 +134,30 @@ const AddingPage = () => {
                     </li>
                 ))}
             </ul>
+
+        <p style={styles.description}>Item missing from the list</p>
+
+        <div style={styles.customInputContainer}>
+            <input
+            type="text"
+            value={customItem}
+            onChange={(e) => setCustomItem(e.target.value)}
+            placeholder="Custom item name"
+            style={styles.searchInput}
+            />
+            <select
+            value={customQuantity}
+            onChange={(e) => setCustomQuantity(e.target.value)}
+            style={styles.select}
+            >
+            {[...Array(1001).keys()].map((number) => (
+                <option key={number} value={number}>
+                {number}
+                </option>
+            ))}
+            </select>
+        </div>
+
             <button onClick={handleNext} style={styles.button}>
                 Next
             </button>
@@ -136,6 +175,20 @@ const styles = {
         borderRadius: '8px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         backgroundColor: '#f9f9f9',
+    },
+    searchInput: {
+        flex: 1,
+        padding: "12px 20px",
+        fontSize: "16px",
+        borderRadius: "25px 0 0 25px",
+        border: "1px solid #ccc",
+        outline: "none",
+    },
+    customInputContainer: {
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        marginBottom: "20px",
     },
     header: {
         textAlign: 'center',
