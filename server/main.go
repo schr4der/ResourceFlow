@@ -5,13 +5,15 @@ import (
   "resourceflow/api"
   "database/sql"
   "os"
+  _ "github.com/mattn/go-sqlite3" 
+
 )
 
 var dbFile = os.Getenv("DATABASE_FILE")
 
 func main() {
 	// Connect to the database
-	db, err := sql.Open("sqlite", dbFile)
+	db, err := sql.Open("sqlite3", "example.db")
 	if err != nil {
 		panic(err)
 	}
@@ -20,7 +22,7 @@ func main() {
 	// Setup Routes
 	router := gin.Default()
 	router.GET("/", api.Health)
-  router.GET("/inventory", api.GetInventory(db))
+	router.GET("/inventory", api.GetInventory(db))
 
 	router.Run(":8080")
 }
